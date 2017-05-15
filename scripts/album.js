@@ -104,7 +104,44 @@ var getSongNumberCell = function(number){
  };
 
 
+var switcheSongs = function(){
+    var tracker = trackIndex(currentAlbum, currentSongFromAlbum);
+    if($(this).hasClass("next") === true){
+        tracker++;
+        if(tracker >= currentAlbum.songs.length){
+            tracker = 0;
+        }
+        var lastSongNumber = currentlyPlayingSongNumber;
+        currentlyPlayingSongNumber = tracker +1;
+        currentSongFromAlbum = currentAlbum.songs[tracker];
+        updatePlayerBarSong();
 
+        var $nextSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+        var $lastSongNumberCell = $('.song-item-number[data-song-number="' + lastSongNumber + '"]');
+
+        $nextSongNumberCell.html(pauseButtonTemplate);
+        $lastSongNumberCell.html(lastSongNumber);
+    }
+    else if($(this).hasClass("previous") === true){
+        tracker--;
+        if(tracker < 0){
+            tracker = currentAlbum.songs.length -1;
+        }
+        var lastSongNumber = currentlyPlayingSongNumber;
+        currentlyPlayingSongNumber = tracker +1;
+        currentSongFromAlbum = currentAlbum.songs[tracker];
+        updatePlayerBarSong();
+
+        var $nextSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+        var $lastSongNumberCell = $('.song-item-number[data-song-number="' + lastSongNumber + '"]');
+
+        $nextSongNumberCell.html(pauseButtonTemplate);
+        $lastSongNumberCell.html(lastSongNumber);
+    }
+}
+
+
+/*original next and previous buttons
 var nextSong = function(){
     var tracker = trackIndex(currentAlbum, currentSongFromAlbum);
     tracker++;
@@ -140,7 +177,7 @@ var previousSong = function(){
     $nextSongNumberCell.html(pauseButtonTemplate);
     $lastSongNumberCell.html(lastSongNumber);
 }
-
+*/
 
 
  // Album button templates
@@ -153,13 +190,15 @@ var currentAlbum = null;
 var currentlyPlayingSongNumber = null;
 var currentSongFromAlbum = null;
 
- var $previousButton = $('.main-controls .previous');
- var $nextButton = $('.main-controls .next');
+ //var $previousButton = $('.main-controls .previous');
+ //var $nextButton = $('.main-controls .next');
+var $switchButtons = $('.main-controls .switches');
 
  $(document).ready(function() {
      setCurrentAlbum(albumPicasso);
-     $previousButton.click(previousSong);
-     $nextButton.click(nextSong);
+     //$previousButton.click(previousSong);
+     //$nextButton.click(nextSong);
+     $switchButtons.click(switcheSongs);
  });
 
 
